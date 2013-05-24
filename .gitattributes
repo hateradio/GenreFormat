@@ -1,0 +1,8 @@
+*         text=auto
+*.scala   eof=lf
+
+*.png     binary
+*.jpeg    binary
+*.jpg     binary
+*.gif     binary
+*.ico     binary

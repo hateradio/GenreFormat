@@ -1,0 +1,17 @@
+import sbt._
+import Keys._
+import sbt.Package.ManifestAttributes
+
+object GenreBuild extends Build {
+
+  override lazy val settings = super.settings
+
+  lazy val baseSettings = Defaults.defaultSettings ++ Seq(
+    packageOptions := Seq(ManifestAttributes(
+                      ("Implementation-Vendor", "myCompany"),
+                      ("Implementation-Title", "myLib"))))
+
+  lazy val root = Project(id = "GenreFormat",
+                        base = file("."),
+                        settings = Project.defaultSettings)
+}
