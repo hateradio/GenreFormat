@@ -13,13 +13,18 @@ object Genre {
     "acappella" -> "A Capella",
     "acapella" -> "A Capella",
     "acapela" -> "A Capella",
+    "alt" -> "Alternative",
     "avantgarde" -> "Avant-Garde",
     "edm" -> "EDM",
     "electro" -> "Electronic",
     "electronica" -> "Electronic",
     "folkrock" -> "Folk-Rock",
+    "hiphop" -> "Hip-Hop",
     "idm" -> "IDM",
-    "postrock" -> "Post-Rock"
+    "postrock" -> "Post-Rock",
+    "psychadelic" -> "Psychedelic",
+    "synth" -> "",
+    "synthpop" -> ""
   )
 
   /** Fixes a string if matched in the corrections map
