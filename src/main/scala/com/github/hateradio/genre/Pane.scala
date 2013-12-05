@@ -1,13 +1,33 @@
 package com.github.hateradio.GenreFormat
 
-import swing._
+import scala.swing._
 import scala.swing.Swing.Raised
 
-import javax.swing.event.{DocumentEvent, DocumentListener}
 import java.awt.Color
+import scala.swing.event.Event
+import scala.Some
 
+trait SwingEvent {
+  type ValueChanged = scala.swing.event.ValueChanged
 
-object Pane extends SimpleSwingApplication {
+  object ValueChanged {
+    def unapply(x: Event) = x match {
+      case vc: ValueChanged => Some(vc.source.asInstanceOf[TextArea])
+      case _ => None
+    }
+  }
+
+  implicit class TextAreaOps(field: TextArea) {
+    def textInput(event: String => Unit): Unit = {
+      field subscribe {
+        case ValueChanged(tf) => event(tf.text)
+        case _ =>
+      }
+    }
+  }
+}
+
+object Pane extends SimpleSwingApplication with SwingEvent {
 
   val input = newText
   val output = newText
@@ -31,7 +51,7 @@ object Pane extends SimpleSwingApplication {
 
   def top = new MainFrame {
     title = "Genre Format"
-    iconImage = Swing.Icon(getClass.getResource("/icons/ear.png")).getImage
+    iconImage = Swing.Icon(getClass getResource "/icons/ear.png").getImage
     resizable = false
 
     contents = new BoxPanel(Orientation.Vertical) {
@@ -43,19 +63,9 @@ object Pane extends SimpleSwingApplication {
       background = new Color(237, 237, 238)
     }
 
-    attachListener
+    input textInput { text => output.text = Genre format text }
+
     setLocationRelativeTo(this)
   }
 
-  private def attachListener = {
-    input.peer.getDocument.addDocumentListener(new DocumentListener() {
-      def changedUpdate(e: DocumentEvent) = updateProperty
-
-      def insertUpdate(e: DocumentEvent) = updateProperty
-
-      def removeUpdate(e: DocumentEvent) = updateProperty
-
-      def updateProperty = output.text = Genre.format(input.text)
-    })
-  }
 }
