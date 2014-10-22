@@ -1,11 +1,14 @@
-package com.github.hateradio.GenreFormat
+package hateradio.genre
+
+import java.util.{Timer, TimerTask}
+import javax.swing.BorderFactory
 
 import scala.swing._
+import scala.swing.Dimension
 import scala.swing.Swing.Raised
+import scala.swing.event.Event
 
 import java.awt.Color
-import scala.swing.event.Event
-import scala.Some
 
 trait SwingEvent {
   type ValueChanged = scala.swing.event.ValueChanged
@@ -31,13 +34,15 @@ object Pane extends SimpleSwingApplication with SwingEvent {
 
   val input = newText
   val output = newText
+  val status = newLabel(" ")
+  val clipboard = java.awt.Toolkit.getDefaultToolkit.getSystemClipboard
 
   def newText = new TextArea {
     text = ""
     columns = 35
     rows = 4
     lineWrap = true
-    border = Swing EtchedBorder Raised
+    border = Swing CompoundBorder (Swing EtchedBorder Raised, Swing EmptyBorder (5, 5, 5, 5))
   }
 
   def newLabel(s: String) = new Label(s) {
@@ -47,6 +52,27 @@ object Pane extends SimpleSwingApplication with SwingEvent {
 
   def emptyScroll(c: Component) = new ScrollPane(c) {
     border = Swing.EmptyBorder(0, 0, 0, 0)
+  }
+
+  private def clearStatusBar(timeout: Int = 1500) = {
+    new Timer().schedule(new TimerTask() {
+      def run() {
+        status.text = ""
+      }
+    }, timeout);
+  }
+
+  private def copyButton(): Button = {
+    new Button {
+//      preferredSize = new Dimension(10, 10)
+      action = Action("Copy") {
+        val sel = new java.awt.datatransfer.StringSelection(output.text)
+        clipboard.setContents(sel, null)
+        status.text = "Copied"
+
+        clearStatusBar()
+      }
+    }
   }
 
   def top = new MainFrame {
@@ -59,6 +85,9 @@ object Pane extends SimpleSwingApplication with SwingEvent {
       contents += emptyScroll(input)
       contents += emptyScroll(newLabel("Result:"))
       contents += emptyScroll(output)
+      contents += emptyScroll(newLabel(" "))
+      contents += emptyScroll(copyButton())
+      contents += emptyScroll(status)
       border = Swing.EmptyBorder(5, 8, 8, 8)
       background = new Color(237, 237, 238)
     }
@@ -66,6 +95,8 @@ object Pane extends SimpleSwingApplication with SwingEvent {
     input textInput { text => output.text = Genre format text }
 
     setLocationRelativeTo(this)
+
+    peer.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE)
   }
 
 }

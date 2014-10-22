@@ -1,4 +1,4 @@
-package com.github.hateradio.GenreFormat
+package hateradio.genre
 
 /**
  * Date: 4/19/13
@@ -6,7 +6,8 @@ package com.github.hateradio.GenreFormat
  */
 object Application extends App {
   override def main(args: Array[String] = null): Unit = {
-    println(System.getProperty("java.class.path"))
+    // println(System.getProperty("java.class.path"))
     Pane.startup(null)
+    Pane
   }
 }

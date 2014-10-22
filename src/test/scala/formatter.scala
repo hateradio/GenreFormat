@@ -1,6 +1,6 @@
 package tester
 
-import com.github.hateradio.GenreFormat.Genre
+import hateradio.genre.Genre
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner

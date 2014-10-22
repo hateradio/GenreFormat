@@ -11,7 +11,7 @@ scalaVersion := "2.10.1"
 
 organization := "com.github.hateradio"
 
-mainClass := Some("com.github.hateradio.GenreFormat.Application")
+mainClass in (Compile, run) := Some("hateradio.genre.Application")
 
 //seq(ProguardPlugin.proguardSettings :_*)
 
